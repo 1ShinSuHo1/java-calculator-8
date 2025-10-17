@@ -9,7 +9,8 @@ public class StringCalculator {
     }
 
     private static String[] split(String input) {
-        return input.split("[,:]");
+        String regex = "[,:]";
+        return input.split(regex);
     }
 
     private static int sum(String[] numbers) {
