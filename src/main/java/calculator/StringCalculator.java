@@ -4,10 +4,15 @@ import java.util.regex.Pattern;
 
 public class StringCalculator {
     public static int add(String input) {
-        if (input == null || input.isEmpty()) {
+        if (input == null) {
             return 0;
         }
-        return sum(split(input));
+        String trimmed = input.trim();
+        if (trimmed.isEmpty()) {
+            return 0;
+        }
+        String[] numbers = split(trimmed);
+        return sum(numbers);
     }
 
     private static String[] split(String input) {
