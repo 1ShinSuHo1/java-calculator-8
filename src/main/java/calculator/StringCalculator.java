@@ -9,23 +9,26 @@ public class StringCalculator {
             return 0;
         }
         String trimmed = input.trim();
-        String[] numbers = split(trimmed);
+        String[] numbers = splitNumbers(trimmed);
         return sum(numbers);
     }
 
-    private static String[] split(String input) {
+    private static String[] splitNumbers(String input) {
         if (input.startsWith("//")) {
-            int newlineIndex = input.indexOf('\n');
+            int newlineIndex = input.indexOf("\n");
             if (newlineIndex == -1) {
                 throw new IllegalArgumentException();
             }
-            String delimiter = input.substring(2, newlineIndex);
+
+            String delimiter = input.substring(2, newlineIndex).trim();
             if (delimiter.length() != 1) {
                 throw new IllegalArgumentException();
             }
+
             String numbersPart = input.substring(newlineIndex + 1).trim();
             return numbersPart.split(Pattern.quote(delimiter));
         }
+
         return input.split("[,:]");
     }
 
@@ -36,16 +39,19 @@ public class StringCalculator {
             if (value.isEmpty()) {
                 throw new IllegalArgumentException();
             }
-            int num;
+
+            int number;
             try {
-                num = Integer.parseInt(value);
+                number = Integer.parseInt(value);
             } catch (NumberFormatException e) {
                 throw new IllegalArgumentException();
             }
-            if (num < 0) {
+
+            if (number < 0) {
                 throw new IllegalArgumentException();
             }
-            result += num;
+
+            result += number;
         }
         return result;
     }
