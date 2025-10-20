@@ -9,50 +9,48 @@ public class StringCalculator {
             return 0;
         }
         String trimmed = input.trim();
-        String[] numbers = splitNumbers(trimmed);
+        String[] numbers = split(trimmed);
         return sum(numbers);
     }
 
-    private static String[] splitNumbers(String input) {
-        if (input.startsWith("//")) {
-            int newlineIndex = input.indexOf("\n");
-            if (newlineIndex == -1) {
-                throw new IllegalArgumentException();
-            }
-
-            String delimiter = input.substring(2, newlineIndex).trim();
-            if (delimiter.length() != 1) {
-                throw new IllegalArgumentException();
-            }
-
-            String numbersPart = input.substring(newlineIndex + 1).trim();
-            return numbersPart.split(Pattern.quote(delimiter));
+    public static String[] split(String input) {
+        if (input == null || input.isBlank()) {
+            return new String[]{"0"};
         }
 
-        return input.split("[,:]");
+        String delimiter = ",|:"; // 기본 구분자
+
+        if (input.startsWith("//")) {
+            int delimiterIndex = input.indexOf("\n");
+            if (delimiterIndex == -1) {
+                throw new IllegalArgumentException("커스텀 구분자 형식 오류");
+            }
+            delimiter = input.substring(2, delimiterIndex);
+            input = input.substring(delimiterIndex + 1);
+        }
+
+        return input.split(delimiter);
     }
 
+
     private static int sum(String[] numbers) {
-        int result = 0;
+        int sum = 0;
         for (String token : numbers) {
             String value = token.trim();
             if (value.isEmpty()) {
                 throw new IllegalArgumentException();
             }
-
             int number;
             try {
                 number = Integer.parseInt(value);
             } catch (NumberFormatException e) {
                 throw new IllegalArgumentException();
             }
-
             if (number < 0) {
                 throw new IllegalArgumentException();
             }
-
-            result += number;
+            sum += number;
         }
-        return result;
+        return sum;
     }
 }
